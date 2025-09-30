@@ -1,1 +1,18 @@
-<p>home.component works!</p>
+<div class="home-wrap" *ngIf="user; else notLoggedIn">
+    <h1>Welcome, {{ user.name || 'User' }}!</h1>
+  
+    <div class="profile">
+      <img *ngIf="user.picture" [src]="user.picture" alt="Profile picture">
+      <p><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+  
+    <button class="btn logout" (click)="logout()">Logout</button>
+  </div>
+  
+  <ng-template #notLoggedIn>
+    <div class="home-wrap">
+      <h2>You are not logged in.</h2>
+      <a routerLink="/">Go back to login</a>
+    </div>
+  </ng-template>
+  
