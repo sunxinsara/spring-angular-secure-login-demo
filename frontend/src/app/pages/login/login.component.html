@@ -1,1 +1,33 @@
-<p>login.component works!</p>
+<div class="login-wrap">
+    <header class="brand">
+      <img src="assets/logo.svg" alt="" aria-hidden="true" class="logo" />
+      <h1 class="title">Secure Login</h1>
+      <p class="subtitle">Sign in to continue</p>
+    </header>
+  
+    <section class="actions" aria-live="polite">
+      <button
+        type="button"
+        class="btn btn-google"
+        (click)="loginWithGoogle()"
+        [disabled]="isRedirecting"
+        aria-label="Continue with Google"
+      >
+        <span class="btn-icon" aria-hidden="true">G</span>
+        <span class="btn-text">
+          {{ isRedirecting ? 'Redirecting…' : 'Continue with Google' }}
+        </span>
+      </button>
+  
+      <p class="help">
+        Having trouble?
+        <a routerLink="/home">Try Home</a>
+        (for dev/testing)
+      </p>
+    </section>
+  
+    <footer class="footnote">
+      <small>By continuing, you agree to the demo’s terms.</small>
+    </footer>
+  </div>
+  
