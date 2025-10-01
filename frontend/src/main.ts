@@ -1,12 +1,16 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withCredentials } from '@angular/common/http'; // 👈 add this
-import { routes } from './app/app.routes';
-import { AppComponent } from './app/app.component'; // or LoginComponent if you bootstrapped that
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
-bootstrapApplication(AppComponent, {
+import { routes } from './app/app.routes';
+import { LoginComponent } from './app/pages/login/login.component';
+import { credentialsInterceptor } from './app/auth/credentials.interceptor';
+
+bootstrapApplication(LoginComponent, {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withCredentials()), // 👈 this registers HttpClient (and sends cookies to Spring)
+    provideHttpClient(
+      withInterceptors([credentialsInterceptor]) // add the interceptor
+    ),
   ],
 }).catch(err => console.error(err));
