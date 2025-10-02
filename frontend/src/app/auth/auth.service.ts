@@ -7,7 +7,8 @@ export class AuthService {
 
   /** Redirect to Spring Security's OAuth2 entrypoint (proxied by Angular dev server). */
   loginWithGoogle(): void {
-    window.location.href = '/oauth2/authorization/google';
+    const redirect = encodeURIComponent('/home');
+    window.location.href = `/oauth2/authorization/google?redirect=${redirect}`;
   }
 
   /** Optional: fetch current user from backend (/api/me). */
