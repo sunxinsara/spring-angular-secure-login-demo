@@ -1,35 +1,25 @@
 package com.unitrust.backend.controller;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Configuration
-public class SecurityConfig {
+import java.util.Map;
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                            ClientRegistrationRepository repo) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/public/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .oauth2Login(oauth -> oauth
-                        .authorizationEndpoint(endpoint ->
-                                endpoint.authorizationRequestResolver(
-                                        new CustomAuthorizationRequestResolver(repo)
-                                )
-                        )
-                        .defaultSuccessUrl("/home", true)
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/")
-                );
+@RestController
+public class UserController {
 
-        return http.build();
+    @GetMapping("/api/me")
+    public Map<String, Object> me(@AuthenticationPrincipal OidcUser user) {
+        if (user == null) return Map.of("authenticated", false);
+        return Map.of(
+                "authenticated", true,
+                "name", user.getFullName(),
+                "email", user.getEmail(),
+                "picture", user.getPicture()
+        );
     }
 }
+
 
