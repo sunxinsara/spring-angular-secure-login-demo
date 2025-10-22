@@ -1,14 +1,4 @@
 <div class="survey-wrap">
   <h2>Survey</h2>
-  <div *ngIf="loading(); else surveyContent">Loading survey...</div>
-  <ng-template #surveyContent>
-    <div *ngIf="error(); else surveyRender" class="error">{{ error() }}</div>
-    <ng-template #surveyRender>
-      <div id="surveyContainer" class="survey-container"></div>
-      <div *ngIf="result() as r" class="result">
-        <h3>Results</h3>
-        <pre>{{ r | json }}</pre>
-      </div>
-    </ng-template>
-  </ng-template>
+    <survey [model]="surveyModel"></survey>
 </div>

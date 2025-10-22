@@ -37,7 +37,9 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/survey-core/survey-core.min.css",
+              "node_modules/survey-core/themes/modern.css"
             ]
           },
           "configurations": {
