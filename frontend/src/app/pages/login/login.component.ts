@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
@@ -12,8 +12,7 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class LoginComponent {
   isRedirecting = false;
-
-  constructor(private auth: AuthService) {}
+  auth = inject(AuthService);
 
   loginWithGoogle(): void {
     this.isRedirecting = true;
