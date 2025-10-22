@@ -22,6 +22,7 @@ export class MockBackendInterceptor implements HttpInterceptor {
           const { username, password } = req.body;
           if (username === 'test' && password === 'test123') {
             // Simulate JWT token
+            localStorage.setItem('mock-token', 'mock-jwt-token');
             return of(new HttpResponse({
               status: 200,
               body: {
@@ -38,6 +39,34 @@ export class MockBackendInterceptor implements HttpInterceptor {
             }));
           }
         }
+
+        // Mock /api/me endpoint for session
+        if (req.url.endsWith('/api/me') && req.method === 'GET') {
+          const token = localStorage.getItem('mock-token');
+          if (token === 'mock-jwt-token') {
+            return of(new HttpResponse({
+              status: 200,
+              body: {
+                authenticated: true,
+                name: 'Test User',
+                email: 'test@example.com',
+                picture: ''
+              }
+            }));
+          } else {
+            return of(new HttpResponse({
+              status: 200,
+              body: { authenticated: false }
+            }));
+          }
+        }
+
+        // Mock /logout endpoint
+        if (req.url.endsWith('/logout') && req.method === 'POST') {
+          localStorage.removeItem('mock-token');
+          return of(new HttpResponse({ status: 200, body: {} }));
+        }
+
         // Pass through other requests
         return next.handle(req);
       })
