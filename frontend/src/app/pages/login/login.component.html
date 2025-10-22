@@ -1,48 +1,78 @@
 <div class="login-wrap">
-    <header class="brand">
-      <img src="assets/logo.svg" alt="" aria-hidden="true" class="logo" />
-      <h1 class="title">Secure Login</h1>
-      <p class="subtitle">Sign in to continue</p>
-    </header>
-  
+  <header class="brand text-center mb-4">
+    <img src="assets/logo.png" alt="Demo logo" class="logo mb-2" />
+    <h1 class="title">Secure Login</h1>
+    <p class="subtitle text-muted">Sign in to continue</p>
+  </header>
 
-    <section class="actions" aria-live="polite">
-      <form (ngSubmit)="login()" autocomplete="off" *ngIf="!isRedirecting">
-        <div class="form-group">
-          <input type="text" [(ngModel)]="username" name="username" placeholder="Username" required autofocus class="form-control" />
+  <section class="actions" aria-live="polite">
+    @if (!isRedirecting()) {
+      <form (ngSubmit)="login()" autocomplete="off" novalidate>
+        <div class="form-group mb-3">
+          <input
+            type="text"
+            [(ngModel)]="username"
+            name="username"
+            placeholder="Username"
+            required
+            autofocus
+            class="form-control"
+          />
         </div>
-        <div class="form-group">
-          <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required class="form-control" />
+
+        <div class="form-group mb-3">
+          <input
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Password"
+            required
+            class="form-control"
+          />
         </div>
-        <button type="submit" class="btn btn-primary" [disabled]="isRedirecting">
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100"
+          [disabled]="isRedirecting()"
+        >
           Login
         </button>
       </form>
-      <div *ngIf="errorMsg" class="error-msg">{{ errorMsg }}</div>
-      <div class="divider">or</div>
-      <button
-        type="button"
-        class="btn btn-google"
-        (click)="loginWithGoogle()"
-        [disabled]="isRedirecting"
-        aria-label="Continue with Google"
-      >
-        <span class="btn-icon" aria-hidden="true">G</span>
-        <span class="btn-text">
-          {{ isRedirecting ? 'Redirecting…' : 'Continue with Google' }}
-        </span>
-      </button>
-      <p class="help">
-        Test account: <b>test / test123</b>
-        <br />
-        Having trouble?
-        <a routerLink="/home">Try Home</a>
-        (for dev/testing)
+    } @else {
+      <p class="text-center text-secondary my-4">
+        Redirecting…
       </p>
-    </section>
-  
-    <footer class="footnote">
-      <small>By continuing, you agree to the demo’s terms.</small>
-    </footer>
-  </div>
-  
+    }
+
+    @if (errorMsg()) {
+      <div class="alert alert-danger mt-3" role="alert">
+        {{ errorMsg() }}
+      </div>
+    }
+
+    <div class="divider text-center my-3">or</div>
+
+    <button
+      type="button"
+      class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center"
+      (click)="loginWithGoogle()"
+      [disabled]="isRedirecting()"
+      aria-label="Continue with Google"
+    >
+      <span class="btn-icon me-2" aria-hidden="true">G</span>
+      <span class="btn-text">
+        {{ isRedirecting() ? 'Redirecting…' : 'Continue with Google' }}
+      </span>
+    </button>
+
+    <p class="help text-center mt-4 small text-muted">
+      Test account: <b>test / test123</b><br />
+      Having trouble? <a routerLink="/home">Try Home</a>
+    </p>
+  </section>
+
+  <footer class="footnote text-center mt-4">
+    <small>By continuing, you agree to the demo’s terms.</small>
+  </footer>
+</div>
